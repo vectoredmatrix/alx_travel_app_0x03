@@ -55,4 +55,23 @@ class Review(models.Model):
     rating = models.SmallIntegerField(validators=[MinValueValidator(1) , MaxValueValidator(5)])
     comment = models.TextField(max_length=500 , blank=False)
     created_at = models.DateTimeField(auto_now_add=True)   
+
+
+class Payment(models.Model):
+    id = models.UUIDField(default=uuid4 , editable=False , primary_key=True)
     
+    booking_id = models.ForeignKey(Booking , on_delete=models.CASCADE , related_name="payments" , blank=False)
+    
+    user_id = models.ForeignKey(User , on_delete=models.CASCADE , related_name="user")
+    
+    amount = models.DecimalField(max_digits=10 , decimal_places=2 , blank=False)
+    
+    tx_id = models.CharField(max_length=50, blank=True , unique=True)
+    
+    status = models.CharField(max_length=20 , blank=True,choices=(("Pending","Pending") ,("Failed/Cancelled" , "Failed/Cancelled") , ("Success" , "Success")))
+    
+    
+    
+    def __str__(self):
+        
+        return self.booking_id.property_id.name

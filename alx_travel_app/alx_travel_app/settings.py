@@ -11,9 +11,16 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
+from datetime import timedelta
+import os
 
+
+from dotenv import load_dotenv
+
+load_dotenv()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
 
 
 # Quick-start development settings - unsuitable for production
@@ -27,7 +34,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-app = ["listings" ,  'drf_yasg', "corsheaders" ,"rest_framework"]
+app = ["listings" ,  'drf_yasg', "corsheaders" ,"rest_framework", 'rest_framework_simplejwt',]
 # Application definition
 
 INSTALLED_APPS = [
@@ -37,6 +44,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    "celery",
 ] + app
 
 
@@ -81,6 +89,40 @@ TEMPLATES = [
         },
     },
 ]
+
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+       
+         'rest_framework_simplejwt.authentication.JWTAuthentication',
+    
+    ]
+}
+
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=60),  # default: 5 minutes
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=7),     # default: 1 day
+    "ROTATE_REFRESH_TOKENS": False,
+    "BLACKLIST_AFTER_ROTATION": True,
+    "UPDATE_LAST_LOGIN": False,
+
+    "ALGORITHM": "HS256",
+    "SIGNING_KEY": SECRET_KEY,
+    "AUTH_HEADER_TYPES": ("Bearer",),
+}
+
+
+
+# Celery Configuration
+CELERY_BROKER_URL = 'amqp://guest:guest@localhost//'  # RabbitMQ default
+CELERY_RESULT_BACKEND = 'rpc://'  # Stores results temporarily
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TIMEZONE = 'UTC'
+
+
+
 
 WSGI_APPLICATION = 'alx_travel_app.wsgi.application'
 
@@ -136,3 +178,15 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+
+
+
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = "smtp.gmail.com"
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER =  os.getenv("EMAIL")  
+EMAIL_HOST_PASSWORD =os.getenv("PASSWORD") 
+

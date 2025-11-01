@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import User , Listing ,Review ,Booking
+from .models import User , Listing ,Review ,Booking , Payment
 from django.contrib.auth.hashers import make_password
 from rest_framework.exceptions import ValidationError
 
@@ -64,4 +64,15 @@ class ReviewSerial(serializers.ModelSerializer):
     def get_property_name(self , obj):
         return obj.property_id.name
     
+
+
+class Paymentserial(serializers.ModelSerializer):
+    property_name = serializers.SerializerMethodField()
     
+    class Meta:
+        model= Payment
+        fields = "__all__"
+        
+    
+    def get_property_name(self , obj):
+       return  obj.booking_id.property_id.name
