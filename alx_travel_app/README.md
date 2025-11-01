@@ -87,6 +87,13 @@ pip install -r requirements.txt
 python manage.py migrate
 
 python manage.py createsuperuser
+# Terminal 1 — RabbitMQ broker
+sudo service rabbitmq-server start
+# or
+rabbitmq-server
+# Terminal 2 — Celery worker
+celery -A alx_travel_app worker -l info
+
 
 python manage.py runserver
 ```
