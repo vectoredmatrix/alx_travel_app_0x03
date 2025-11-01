@@ -7,7 +7,7 @@ from .models import Listing , Booking ,Payment
 from .paginations import LargeResultsSetPagination
 from rest_framework.response import Response
 from rest_framework.decorators import permission_classes , api_view
-from .task import send_booking_confirmation_email
+from .tasks import send_booking_confirmation_email
 
 # Create your views here.
 
