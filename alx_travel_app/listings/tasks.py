@@ -7,7 +7,7 @@ def sendPaymentmail(to_email , subject , message):
     send_mail(
         subject=subject,
         message= message,
-        from_email="no-reply@travelapp.com",
+        from_email=settings.EMAIL_HOST_USER,
         recipient_list=[to_email],
         fail_silently=False
     ) 
