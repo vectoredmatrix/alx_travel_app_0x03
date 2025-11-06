@@ -34,7 +34,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-app = ["listings" ,  'drf_yasg', "corsheaders" ,"rest_framework", 'rest_framework_simplejwt',]
+app = ["alx_travel_app.listings" ,  'drf_yasg', "corsheaders" ,"rest_framework", 'rest_framework_simplejwt',]
 # Application definition
 
 INSTALLED_APPS = [
