@@ -30,7 +30,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.getenv("DJANGOSECRETKEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = []
 
@@ -199,5 +199,5 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER =  os.getenv("EMAIL")  
 EMAIL_HOST_PASSWORD =os.getenv("PASSWORD") 
 
-STATIC_URL = '/static'
+STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR , "staticfiles")
