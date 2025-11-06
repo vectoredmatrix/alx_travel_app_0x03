@@ -30,7 +30,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-l8fop+t7sb^jbt*fybwo=+q5x9tj!1)woe1hy(!0s(oz5$ye#3'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = []
 
@@ -44,7 +44,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    "celery",
+    #"celery",
 ] + app
 
 
@@ -113,13 +113,22 @@ SIMPLE_JWT = {
 
 
 
-# Celery Configuration
-CELERY_BROKER_URL = 'amqp://guest:guest@localhost//'  # RabbitMQ default
-CELERY_RESULT_BACKEND = 'rpc://'  # Stores results temporarily
+import os
+
+# Celery broker: use CloudAMQP on Render, fall back to local RabbitMQ
+CELERY_BROKER_URL = os.getenv(
+    "CLOUDAMQP_URL",
+    "amqp://guest:guest@localhost//"      # fallback for local dev
+)
+
+# Simple, portable result backend
+CELERY_RESULT_BACKEND = os.getenv("CELERY_RESULT_BACKEND", "rpc://")
+
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TIMEZONE = 'UTC'
+
 
 
 
@@ -190,3 +199,5 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER =  os.getenv("EMAIL")  
 EMAIL_HOST_PASSWORD =os.getenv("PASSWORD") 
 
+STATIC_URL = '/static'
+STATIC_ROOT = os.path.join(BASE_DIR , "staticfiles")
